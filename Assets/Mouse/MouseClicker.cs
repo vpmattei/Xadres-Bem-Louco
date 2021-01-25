@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MouseClicker : MonoBehaviour
 {
+    [SerializeField] private GameObject chessTable;
     private GameObject positionSelected;
 
     void Awake() {
@@ -22,12 +23,14 @@ public class MouseClicker : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 100)) {
             Debug.DrawLine(ray.origin, hit.point);
-            if (positionSelected != null) {                                         // Deselects the last position selected, unless there was no position selected
-                positionSelected.GetComponent<Position>().setSelectionTo(false);
+            if (positionSelected != null) {                                         // Unselects the last position selected, unless there was no position selected
+                chessTable.GetComponent<ChessTable>().UnselectPosition();
+                //positionSelected.GetComponent<Position>().setSelectionTo(false);
             }
             positionSelected = hit.collider.gameObject;
-            Debug.Log("Position: " + positionSelected.GetComponent<Position>().positionToString());
-            positionSelected.GetComponent<Position>().setSelectionTo(true);
+            chessTable.GetComponent<ChessTable>().SelectPosition(positionSelected);
+            //Debug.Log("Position: " + positionSelected.GetComponent<Position>().positionToString());
+            //positionSelected.GetComponent<Position>().setSelectionTo(true);
         }
 }
 }

@@ -43,3 +43,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbfba1c0664fd9843b2f68a75cc40830, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chessTable: {fileID: 0}

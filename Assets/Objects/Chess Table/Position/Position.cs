@@ -4,36 +4,47 @@ using UnityEngine;
 
 public class Position : MonoBehaviour {
     
-    public char letter;
-    public int number;
-    public bool isEmpty;
-    private bool selected;
+    [SerializeField] private char letter;
+    [SerializeField] private int number;
+    [SerializeField] private bool selected;
+    [SerializeField] private GameObject piece = null;
 
-    void OnMouseDown() {
-        //Debug.Log("Position Clicked : \n" + positionToString());
-        //this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
-    }
-
-    void Update() {
-        this.gameObject.GetComponent<SpriteRenderer>().enabled = this.selected;
-    }
-
-    public void setPositions(char letter, int number) {
+    public void SetPositions(char letter, int number) {
         this.letter = letter;
         this.number = number;
     }
 
-    public void setEmpty() {
-        this.isEmpty = true;
+    public void SpawnPiece(GameObject piece, string positionName) {
+        GameObject pieceSpawned = Instantiate(piece, this.gameObject.transform.position, piece.transform.rotation);
+        GameObject positionToSpawn = GameObject.Find(positionName);
+        pieceSpawned.transform.parent = positionToSpawn.gameObject.transform;
     }
 
-    public void setSelectionTo(bool isSelected) {
+    public void AssignPiece(GameObject piece) {
+        this.piece = piece;
+    }
+    public void RemovePiece() {
+        this.piece = null;
+    }
+
+    public bool IsEmpty() {
+        return this.piece == null;
+    }
+
+    public void SetSelectionTo(bool isSelected) {
         this.selected = isSelected;
+        this.gameObject.GetComponent<SpriteRenderer>().enabled = isSelected;
     }
 
-    public string positionToString() {
-        return ("Letter : " + this.letter + "\n"+
-                  "Number : " + this.number + "\n"+
-                  "Is Empty ? : " + this.isEmpty);
+    public char GetLetter() {
+        return this.letter;
+    }
+
+    public int GetNumber() {
+        return this.number;
+    }
+
+    public string PositionToString() {
+        return ("Position(" + this.letter + ", " + this.number + ")");
     }
 }
