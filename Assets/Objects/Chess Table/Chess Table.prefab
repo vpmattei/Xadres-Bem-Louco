@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3196864992843082717}
   m_Layer: 0
   m_Name: Chess Table
-  m_TagString: Untagged
+  m_TagString: ChessTable
   m_Icon: {fileID: 2800000, guid: d5130ef0d43e1e34c99f3b47d81b4559, type: 3}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46,11 +46,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   positionPrefab: {fileID: 8785030278618349592, guid: 185ae522d21aa794a9920cda40477e9a,
     type: 3}
+  piecePrefab: {fileID: 8066423893713254212, guid: 0b327910da97572459797bfb20e0d1ff,
+    type: 3}
   positions: []
   positionSelected: {fileID: 0}
   spawnPositionDistance: 0.5
-  piecePrefab: {fileID: 8066423893713254212, guid: 0b327910da97572459797bfb20e0d1ff,
-    type: 3}
 --- !u!212 &3196864992843082717
 SpriteRenderer:
   m_ObjectHideFlags: 0

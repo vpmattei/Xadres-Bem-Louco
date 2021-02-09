@@ -5,15 +5,15 @@ using UnityEngine;
 public class MouseClicker : MonoBehaviour
 {
     [SerializeField] private GameObject chessTable;
-    private GameObject positionSelected;
+    private GameObject objectSelected;
 
     void Awake() {
-        positionSelected = null;
+        objectSelected = null;
     }
 
     void Update() {
         if (Input.GetMouseButtonDown(0)) {
-            Debug.Log("Pressed left click, casting ray.");
+            //Debug.Log("Pressed left click, casting ray.");
             CastRay();
         }
     }
@@ -23,14 +23,21 @@ public class MouseClicker : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 100)) {
             Debug.DrawLine(ray.origin, hit.point);
-            if (positionSelected != null) {                                         // Unselects the last position selected, unless there was no position selected
+            if (objectSelected != null) {                                         // Unselects the last position/piece selected, unless there was no position/piece selected
                 chessTable.GetComponent<ChessTable>().UnselectPosition();
-                //positionSelected.GetComponent<Position>().setSelectionTo(false);
+                chessTable.GetComponent<ChessTable>().UnselectPiece();
             }
-            positionSelected = hit.collider.gameObject;
-            chessTable.GetComponent<ChessTable>().SelectPosition(positionSelected);
-            //Debug.Log("Position: " + positionSelected.GetComponent<Position>().positionToString());
+            objectSelected = hit.collider.gameObject;
+            // If object selected is a position
+            if(objectSelected.CompareTag("Position")) chessTable.GetComponent<ChessTable>().SelectPosition(objectSelected);
+            // If object selected is a piece
+            if(objectSelected.CompareTag("Piece")) chessTable.GetComponent<ChessTable>().SelectPiece(objectSelected);
+            Debug.Log(objectSelected);
             //positionSelected.GetComponent<Position>().setSelectionTo(true);
+        }
+        else {
+            chessTable.GetComponent<ChessTable>().UnselectPosition();
+            chessTable.GetComponent<ChessTable>().UnselectPiece();
         }
 }
 }

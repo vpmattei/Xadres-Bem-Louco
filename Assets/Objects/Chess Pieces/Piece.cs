@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Piece : MonoBehaviour {
+
+    private char letter;
+    private int number;
+
+    [SerializeField] private bool isSelected;
+
     [SerializeField] private List<GameObject> possibleMovePositions;
     [SerializeField] private GameObject currentPosition = null;
 
@@ -18,6 +24,14 @@ public class Piece : MonoBehaviour {
         this.currentPosition = position;                                // Updates current position
     }
 
+    public void SetSelectionTo(bool isSelected) {
+        this.isSelected = isSelected;
+    }
+
+    public void SetPieceName(string name) {
+        this.gameObject.name = "Piece(" + name + ")";
+    }
+
     //public abstract GameObject PossibleMovePositions();
 
     public void Die() {
@@ -25,5 +39,9 @@ public class Piece : MonoBehaviour {
         this.isDead = true;
         // Play dying animation
         //this.gameObject.SetActive(false);
+    }
+
+    public GameObject GetCurrentPosition() {
+        return this.currentPosition;
     }
 }

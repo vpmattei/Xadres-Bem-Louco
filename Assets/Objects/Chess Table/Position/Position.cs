@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Position : MonoBehaviour {
     
-    [SerializeField] private char letter;
-    [SerializeField] private int number;
-    [SerializeField] private bool selected;
+    private char letter;
+    private int number;
+    [SerializeField] private bool isSelected;
     [SerializeField] private GameObject piece = null;
 
     public void SetPositions(char letter, int number) {
@@ -14,15 +14,12 @@ public class Position : MonoBehaviour {
         this.number = number;
     }
 
-    public void SpawnPiece(GameObject piece, string positionName) {
-        GameObject pieceSpawned = Instantiate(piece, this.gameObject.transform.position, piece.transform.rotation);
-        GameObject positionToSpawn = GameObject.Find(positionName);
-        pieceSpawned.transform.parent = positionToSpawn.gameObject.transform;
-    }
-
     public void AssignPiece(GameObject piece) {
         this.piece = piece;
+        piece.transform.parent = this.gameObject.transform;     // Place piece as a child of the position
+        piece.GetComponent<Piece>().SetPieceName(this.letter + ", " + this.number);
     }
+    
     public void RemovePiece() {
         this.piece = null;
     }
@@ -32,7 +29,7 @@ public class Position : MonoBehaviour {
     }
 
     public void SetSelectionTo(bool isSelected) {
-        this.selected = isSelected;
+        this.isSelected = isSelected;
         this.gameObject.GetComponent<SpriteRenderer>().enabled = isSelected;
     }
 

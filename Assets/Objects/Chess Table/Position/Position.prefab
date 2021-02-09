@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2321382764504971733}
   m_Layer: 0
   m_Name: Position
-  m_TagString: Untagged
+  m_TagString: Position
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -45,9 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fce734ba7b1024d42865bb52582de5b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  letter: 0
-  number: 0
-  selected: 0
+  isSelected: 0
   piece: {fileID: 0}
 --- !u!65 &5329129527002949781
 BoxCollider:

@@ -45,7 +45,9 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\Game\GameCoordinator.cs" />
      <Compile Include="Assets\Mouse\MouseClicker.cs" />
+     <Compile Include="Assets\Objects\Chess Pieces\Piece.cs" />
      <Compile Include="Assets\Objects\Chess Table\ChessTable.cs" />
      <Compile Include="Assets\Objects\Chess Table\Position\Position.cs" />
  <Reference Include="UnityEngine">
