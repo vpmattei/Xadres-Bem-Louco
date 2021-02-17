@@ -51,7 +51,10 @@ public class MouseClicker : MonoBehaviour
 
             #region Chose Move Phase
             if(currentGamePhase == GameCoordinator.GamePhase.ChoseMove.ToString()) {
-                // If we click on a position then we update the board reference of the position selected
+                // If we click on a position then we check if
+                    // Is it empty?
+                    // Does it have an enemy piece?
+                    // Does it have a friendly piece?
                 if(objectClicked.CompareTag("Position")) {
                     GameObject positionClicked = objectClicked;
                     GameObject pieceAtPosition = positionClicked.GetComponent<Position>().GetPiece();
@@ -76,7 +79,7 @@ public class MouseClicker : MonoBehaviour
                         SelectPieceFromObjectClicked(objectClicked);
                     }
                 }
-                // If we click on an enemy piece (objectClicked = enemy piece)
+                // If we click on an enemy piece then we kill that piece and move the piece selected to its position
                 else if(!objectClicked.CompareTag(currentTurn)) {
                     GameObject pieceClicked = objectClicked;
                     GameObject positionOfPiece = objectClicked.GetComponent<Piece>().GetCurrentPosition();
