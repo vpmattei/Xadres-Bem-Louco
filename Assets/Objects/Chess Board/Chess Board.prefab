@@ -1,0 +1,127 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1242773727333371943
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 728214486038002405}
+  - component: {fileID: 4289476585457435072}
+  - component: {fileID: 3196864992843082717}
+  m_Layer: 0
+  m_Name: Chess Board
+  m_TagString: ChessTable
+  m_Icon: {fileID: 2800000, guid: d5130ef0d43e1e34c99f3b47d81b4559, type: 3}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &728214486038002405
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1242773727333371943}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4289476585457435072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1242773727333371943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a601fb3be38c03f4685d5318f51dd9a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positionPrefab: {fileID: 8785030278618349592, guid: 185ae522d21aa794a9920cda40477e9a,
+    type: 3}
+  whitePawnPrefab: {fileID: 8536795482979836802, guid: 706fa3b394eab264e935e3d3dc5f5b16,
+    type: 3}
+  whiteRookPrefab: {fileID: 5555806667941348021, guid: df720610e1ff0b949a6ee22540bd796e,
+    type: 3}
+  whiteKnightPrefab: {fileID: 890803694447197610, guid: 8c04d029892d0b04aac77ca7628754fa,
+    type: 3}
+  whiteBishopPrefab: {fileID: 5420238962216381384, guid: 3bd7529a6d15b0044a526e2a4b586753,
+    type: 3}
+  whiteQueenPrefab: {fileID: 8598047313892790315, guid: 919a85982b587c54492f075e5b0b7e9f,
+    type: 3}
+  whiteKingPrefab: {fileID: 4704663666244842681, guid: 873d5d8f76ff0f642b7af34698e24f42,
+    type: 3}
+  blackPawnPrefab: {fileID: 4489689893745813989, guid: f37a24391e2202848a2456705fc73c1c,
+    type: 3}
+  blackRookPrefab: {fileID: 35555059427044888, guid: f826b92dcaee59c4ea137bc7205abf2f,
+    type: 3}
+  blackKnightPrefab: {fileID: 9200461481052717704, guid: e88977971973462458c0364ab9bed50c,
+    type: 3}
+  blackBishopPrefab: {fileID: 5933880894888195645, guid: 4f057001b06b65641802f4dc064c5910,
+    type: 3}
+  blackQueenPrefab: {fileID: 1641675170424281698, guid: 6927a32f77f58c04e8bc1e9b0319373d,
+    type: 3}
+  blackKingPrefab: {fileID: 900280963034512437, guid: 5744197556309b64192a3612356e69fe,
+    type: 3}
+  positions: []
+  positionSelected: {fileID: 0}
+  pieces: []
+  pieceSelected: {fileID: 0}
+  spawnPositionDistance: 0.5
+--- !u!212 &3196864992843082717
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1242773727333371943}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: d5130ef0d43e1e34c99f3b47d81b4559, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 13.6, y: 13.72}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0

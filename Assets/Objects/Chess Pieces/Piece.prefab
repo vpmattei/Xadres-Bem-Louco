@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 2553648402155303783}
   m_Layer: 0
   m_Name: Piece
-  m_TagString: Piece
+  m_TagString: Player2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7f4c3c50b452fc40a0a58d3e46bcd9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameCoordinator: {fileID: 0}
   isSelected: 0
   possibleMovePositions: []
   currentPosition: {fileID: 0}
@@ -90,7 +91,7 @@ SpriteRenderer:
   m_SortingLayerID: 1128096857
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 4e28b18cda5e70c4aa4ce6621bdb6c8a, type: 3}
+  m_Sprite: {fileID: -67182697174857456, guid: 0b54586f00952944d9eff3a8c2374434, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

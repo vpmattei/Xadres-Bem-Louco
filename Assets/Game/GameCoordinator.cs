@@ -5,31 +5,66 @@ using UnityEngine;
 public class GameCoordinator : MonoBehaviour
 {
 
-    private enum TURN 
+    public enum Turn 
     {
         Player1,
         Player2
     }
 
-    private enum GamePhase
+    public enum GamePhase
     {
         ChosePiece,
         ChoseMove,
-        MakeAction
+        MakeAction,
+        SwitchTurn
         
     }
 
-    private GamePhase currentGamePhase;
+    public Turn currentTurn;
+    public GamePhase currentGamePhase;
 
-    // Start is called before the first frame update
     void Start()
     {
         currentGamePhase = GamePhase.ChosePiece;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if(Input.GetKeyDown(KeyCode.RightArrow)) {
+            NextGamePhase();
+        }
+
+        if(Input.GetKeyDown(KeyCode.LeftArrow)) {
+            PreviousGamePhase();
+        }
     }
+    public Turn GetCurrentTurn() {
+        return currentTurn;
+    }
+
+    public GamePhase GetCurrentGamePhase() {
+        return currentGamePhase;
+    }
+
+    private void ChangeTurn() {
+        if(currentTurn == Turn.Player1) currentTurn = Turn.Player2;
+        else currentTurn = Turn.Player1;
+        currentGamePhase = GamePhase.ChosePiece;
+    }
+
+    public void NextGamePhase() {
+        currentGamePhase += 1;
+        if(currentGamePhase == GamePhase.SwitchTurn) {
+            ChangeTurn();
+        }
+    }
+
+    public void PreviousGamePhase() {
+        currentGamePhase -= 1;
+    }
+
+    public void ResetGamePhase() {
+        currentGamePhase = GamePhase.ChosePiece;
+    }
+
 }

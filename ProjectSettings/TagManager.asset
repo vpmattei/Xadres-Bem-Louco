@@ -6,7 +6,9 @@ TagManager:
   tags:
   - ChessTable
   - Position
-  - Piece
+  - Player1
+  - Player2
+  - White Piece
   layers:
   - Default
   - TransparentFX
