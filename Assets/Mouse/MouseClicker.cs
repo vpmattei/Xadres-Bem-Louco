@@ -6,17 +6,16 @@ using UnityEngine;
 public class MouseClicker : MonoBehaviour
 {
     [SerializeField] private GameObject chessBoard;
-    private GameObject objectSelected;
-
     [SerializeField] private GameObject gameCoordinator;
 
-    private string currentTurn;
-
+    private GameObject objectClicked;
     private GameObject pieceSelected;
-    private GameObject pieceAtPosition;
+
+    private string currentTurn;
+    private string currentGamePhase;
 
     void Awake() {
-        objectSelected = null;
+        objectClicked = null;
     }
 
     void Update() {
@@ -31,54 +30,68 @@ public class MouseClicker : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 100)) {
             Debug.DrawLine(ray.origin, hit.point);
-            if (objectSelected != null) {                                         // Unselects the last position/piece selected, unless there was no position/piece selected
+            if (objectClicked != null) {                                         // Unselects the last position/piece selected, unless there was no position/piece selected
                 chessBoard.GetComponent<ChessBoard>().UnselectPosition();
                 chessBoard.GetComponent<ChessBoard>().UnselectPiece();
             }
-            objectSelected = hit.collider.gameObject;   // We either "hit" a piece or a position
+            objectClicked = hit.collider.gameObject;   // We either "hit" a piece or a position
 
             currentTurn = gameCoordinator.GetComponent<GameCoordinator>().GetCurrentTurn().ToString();  // Get the current turn
+            currentGamePhase = gameCoordinator.GetComponent<GameCoordinator>().GetCurrentGamePhase().ToString();
 
             #region Chose Piece Phase
-            if(gameCoordinator.GetComponent<GameCoordinator>().GetCurrentGamePhase() == GameCoordinator.GamePhase.ChosePiece) {
-                // Check if the piece is from the player of the current turn
-                // If so, then we update the board reference of the piece selected
-                if(objectSelected.CompareTag(currentTurn)) {
-                    chessBoard.GetComponent<ChessBoard>().SelectPiece(objectSelected);
-                    gameCoordinator.GetComponent<GameCoordinator>().NextGamePhase();
+            if(currentGamePhase == GameCoordinator.GamePhase.ChosePiece.ToString()) {
+                SelectPieceFromObjectClicked(objectClicked);
 
-                    pieceSelected = objectSelected;
+                if(objectClicked.CompareTag(currentTurn)) {  // Is the object clicked friendly? Then go to the next game phase
+                    gameCoordinator.GetComponent<GameCoordinator>().NextGamePhase();
                 }
             }
             #endregion
 
             #region Chose Move Phase
-            if(gameCoordinator.GetComponent<GameCoordinator>().GetCurrentGamePhase() == GameCoordinator.GamePhase.ChoseMove) {
-                // If object selected is a position then we update the board reference of the position selected
-                if(objectSelected.CompareTag("Position")) {
-                    chessBoard.GetComponent<ChessBoard>().SelectPosition(objectSelected);
-                    gameCoordinator.GetComponent<GameCoordinator>().NextGamePhase();
-                    
-                    // Check if the position already has a piece
-                    pieceAtPosition = objectSelected.GetComponent<Position>().GetPiece();
+            if(currentGamePhase == GameCoordinator.GamePhase.ChoseMove.ToString()) {
+                // If we click on a position then we update the board reference of the position selected
+                if(objectClicked.CompareTag("Position")) {
+                    GameObject positionClicked = objectClicked;
+                    GameObject pieceAtPosition = positionClicked.GetComponent<Position>().GetPiece();
+
                     // Is it empty? Then just move to the position
                     if(pieceAtPosition == null) {
-                        // Make piece move to the selected position
-                        pieceSelected.GetComponent<Piece>().MoveToPostion(objectSelected);
+                        pieceSelected.GetComponent<Piece>().MoveToPostion(positionClicked);
+
+                        gameCoordinator.GetComponent<GameCoordinator>().NextGamePhase();
+                        pieceSelected = null;
                     }
                     // Is it enemy? If yes then "kill" the enemy piece and place it in its place
                     else if(!pieceAtPosition.CompareTag(currentTurn)) {
                         pieceAtPosition.GetComponent<Piece>().Die();
-                        pieceSelected.GetComponent<Piece>().MoveToPostion(objectSelected);
-                    }
-                    // Is it friendly? Then do nothing
-                }
-                // If we select a piece again then we just change the piece selected
-                else if(objectSelected.CompareTag(currentTurn)) {
-                    chessBoard.GetComponent<ChessBoard>().SelectPiece(objectSelected);
+                        pieceSelected.GetComponent<Piece>().MoveToPostion(positionClicked);
 
-                    pieceSelected = objectSelected;
+                        gameCoordinator.GetComponent<GameCoordinator>().NextGamePhase();
+                        pieceSelected = null;
+                    }
+                    // Is it friendly? Then we select the piece
+                    else if(pieceAtPosition.CompareTag(currentTurn)) {
+                        SelectPieceFromObjectClicked(objectClicked);
+                    }
                 }
+                // If we click on an enemy piece (objectClicked = enemy piece)
+                else if(!objectClicked.CompareTag(currentTurn)) {
+                    GameObject pieceClicked = objectClicked;
+                    GameObject positionOfPiece = objectClicked.GetComponent<Piece>().GetCurrentPosition();
+
+                    pieceClicked.GetComponent<Piece>().Die();
+                    pieceSelected.GetComponent<Piece>().MoveToPostion(positionOfPiece);
+
+                    gameCoordinator.GetComponent<GameCoordinator>().NextGamePhase();
+                    pieceSelected = null;
+                }
+                // If we click on a piece again then we just change the piece selected
+                else if(objectClicked.CompareTag(currentTurn)) {
+                    SelectPieceFromObjectClicked(objectClicked);
+                }
+
             }
             #endregion
         }
@@ -89,6 +102,22 @@ public class MouseClicker : MonoBehaviour
 
             // Reset Game Phase
             gameCoordinator.GetComponent<GameCoordinator>().ResetGamePhase();
+        }
+    }
+
+    private void SelectPieceFromObjectClicked(GameObject objectClicked) {
+        if (objectClicked.CompareTag("Position")) {     // Is the object clicked a position?
+            GameObject positionClicked = objectClicked;
+            GameObject pieceAtPosition = positionClicked.GetComponent<Position>().GetPiece();
+            
+            if (pieceAtPosition != null && pieceAtPosition.CompareTag(currentTurn)) {  // Is the pieceAtPosition not null and friendly piece?
+                chessBoard.GetComponent<ChessBoard>().SelectPiece(pieceAtPosition);
+                pieceSelected = chessBoard.GetComponent<ChessBoard>().GetPieceSelected();
+            }
+        }
+        else if (objectClicked.CompareTag(currentTurn)) {   // Is the object clicked a friendly piece?
+            chessBoard.GetComponent<ChessBoard>().SelectPiece(objectClicked);
+            pieceSelected = chessBoard.GetComponent<ChessBoard>().GetPieceSelected();
         }
     }
 }

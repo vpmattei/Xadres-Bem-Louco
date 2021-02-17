@@ -168,7 +168,7 @@ public class ChessBoard : MonoBehaviour {
     public void UnselectPiece() {
         if(this.pieceSelected != null) this.pieceSelected.GetComponent<Piece>().SetSelectionTo(false);
         this.pieceSelected = null;
-        UnselectPosition();                                                                             // Deselects the position where the piece is placed at
+        UnselectPosition();                                                                             // Unselects the position where the piece is placed at
     }
 
     public GameObject GetPieceSelected() {
