@@ -46,6 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSelected: 0
+  isPossibleMove: 0
+  isPossibleAttackMove: 0
   piece: {fileID: 0}
 --- !u!65 &5329129527002949781
 BoxCollider:
@@ -99,8 +101,8 @@ SpriteRenderer:
   m_SortingLayerID: 1677846273
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b5cb037ffbae9fb44a707e057e91a2f3, type: 3}
-  m_Color: {r: 0.06170094, g: 1, b: 0, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 15a7cc6f7aafef04682e14919b81337a, type: 3}
+  m_Color: {r: 0.2734437, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

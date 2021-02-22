@@ -27,11 +27,14 @@ public class ChessBoard : MonoBehaviour {
     [SerializeField] private GameObject blackKingPrefab;
     #endregion
 
-    [SerializeField] private List<GameObject> positions;
+    [SerializeField] private GameObject[,] positions = new GameObject[8,8];
     [SerializeField] private GameObject positionSelected;
 
     [SerializeField] private List<GameObject> pieces;
     [SerializeField] private GameObject pieceSelected;
+    [SerializeField] private List<GameObject> possibleMovesOfSelectedPiece;
+
+    // TO-DO List of possible moves of every piece
 
     [SerializeField] private float spawnPositionDistance = 0.5f;
 
@@ -54,98 +57,100 @@ public class ChessBoard : MonoBehaviour {
                 position.transform.parent = gameObject.transform;   // Making each position a child of ChessTable
 
                 // Set their positions i.e(e,3) and give the gameObjects in the scene a name(ex: Position(E,3))
-                position.GetComponent<Position>().SetPositions(LETTERS[l],NUMBERS[n]);
+                position.GetComponent<Position>().SetPositions(LETTERS[l], l, n);
                 position.name = position.GetComponent<Position>().PositionToString();
 
                 // Add the position to the positions list
-                positions.Add(position);
+                positions[l,n] = position;
             }
         }
     }
 
     private void FillPositionsWithPieces() {
-        foreach (GameObject pos in positions) {
-            #region Fill White Pieces
-            if (pos.GetComponent<Position>().GetNumber() == 2) {
-                // Fill Pawns
-                GameObject pawnSpawned = Instantiate(whitePawnPrefab, pos.transform.position, whitePawnPrefab.transform.rotation);
-                pawnSpawned.GetComponent<Piece>().AssignPosition(pos);
-                pieces.Add(pawnSpawned);
-            }
-            if (pos.GetComponent<Position>().GetNumber() == 1) {
-                // Fill Rooks
-                if (pos.GetComponent<Position>().GetLetter() == 'A' || pos.GetComponent<Position>().GetLetter() == 'H') {
-                    GameObject rookSpawned = Instantiate(whiteRookPrefab, pos.transform.position, whiteRookPrefab.transform.rotation);
-                    rookSpawned.GetComponent<Piece>().AssignPosition(pos);
-                    pieces.Add(rookSpawned);
+        for(int n = 0; n < 8; n++) {            // for 1...8
+            for(int l = 0; l < 8; l++) {        // for A...H
+                #region Fill White Pieces
+                if (n == 1) {
+                    // Fill Pawns
+                    GameObject pawnSpawned = Instantiate(whitePawnPrefab, positions[l,n].transform.position, whitePawnPrefab.transform.rotation);
+                    pawnSpawned.GetComponent<Piece>().AssignPosition(positions[l,n]);
+                    pieces.Add(pawnSpawned);
                 }
-                // Fill Knights
-                if (pos.GetComponent<Position>().GetLetter() == 'B' || pos.GetComponent<Position>().GetLetter() == 'G') {
-                    GameObject knightSpawned = Instantiate(whiteKnightPrefab, pos.transform.position, whiteKnightPrefab.transform.rotation);
-                    knightSpawned.GetComponent<Piece>().AssignPosition(pos);
-                    pieces.Add(knightSpawned);
+                if (n == 0) {
+                    // Fill Rooks
+                    if (l == 0 || l == 7) {
+                        GameObject rookSpawned = Instantiate(whiteRookPrefab, positions[l,n].transform.position, whiteRookPrefab.transform.rotation);
+                        rookSpawned.GetComponent<Piece>().AssignPosition(positions[l,n]);
+                        pieces.Add(rookSpawned);
+                    }
+                    // Fill Knights
+                    if (l == 1 || l == 6) {
+                        GameObject knightSpawned = Instantiate(whiteKnightPrefab, positions[l,n].transform.position, whiteKnightPrefab.transform.rotation);
+                        knightSpawned.GetComponent<Piece>().AssignPosition(positions[l,n]);
+                        pieces.Add(knightSpawned);
+                    }
+                    // Fill Bishops
+                    if (l == 2 || l == 5) {
+                        GameObject bishopSpawned = Instantiate(whiteBishopPrefab, positions[l,n].transform.position, whiteBishopPrefab.transform.rotation);
+                        bishopSpawned.GetComponent<Piece>().AssignPosition(positions[l,n]);
+                        pieces.Add(bishopSpawned);
+                    }
+                    // Fill Queen
+                    if (l == 3) {
+                        GameObject queenSpawned = Instantiate(whiteQueenPrefab, positions[l,n].transform.position, whiteQueenPrefab.transform.rotation);
+                        queenSpawned.GetComponent<Piece>().AssignPosition(positions[l,n]);
+                        pieces.Add(queenSpawned);
+                    }
+                    // Fill King
+                    if (l == 4) {
+                        GameObject kingSpawned = Instantiate(whiteKingPrefab, positions[l,n].transform.position, whiteKingPrefab.transform.rotation);
+                        kingSpawned.GetComponent<Piece>().AssignPosition(positions[l,n]);
+                        pieces.Add(kingSpawned);
+                    }
                 }
-                // Fill Bishops
-                if (pos.GetComponent<Position>().GetLetter() == 'C' || pos.GetComponent<Position>().GetLetter() == 'F') {
-                    GameObject bishopSpawned = Instantiate(whiteBishopPrefab, pos.transform.position, whiteBishopPrefab.transform.rotation);
-                    bishopSpawned.GetComponent<Piece>().AssignPosition(pos);
-                    pieces.Add(bishopSpawned);
-                }
-                // Fill Queen
-                if (pos.GetComponent<Position>().GetLetter() == 'D') {
-                    GameObject queenSpawned = Instantiate(whiteQueenPrefab, pos.transform.position, whiteQueenPrefab.transform.rotation);
-                    queenSpawned.GetComponent<Piece>().AssignPosition(pos);
-                    pieces.Add(queenSpawned);
-                }
-                // Fill King
-                if (pos.GetComponent<Position>().GetLetter() == 'E') {
-                    GameObject kingSpawned = Instantiate(whiteKingPrefab, pos.transform.position, whiteKingPrefab.transform.rotation);
-                    kingSpawned.GetComponent<Piece>().AssignPosition(pos);
-                    pieces.Add(kingSpawned);
-                }
-            }
-            #endregion
+                #endregion
 
-            #region Fill Black Pieces
-            if (pos.GetComponent<Position>().GetNumber() == 7) {
-                // Fill Pawns
-                GameObject pawnSpawned = Instantiate(blackPawnPrefab, pos.transform.position, blackPawnPrefab.transform.rotation);
-                pawnSpawned.GetComponent<Piece>().AssignPosition(pos);
-                pieces.Add(pawnSpawned);
+                #region Fill Black Pieces
+                if (n == 6) {
+                    // Fill Pawns
+                    GameObject pawnSpawned = Instantiate(blackPawnPrefab, positions[l,n].transform.position, blackPawnPrefab.transform.rotation);
+                    pawnSpawned.GetComponent<Piece>().AssignPosition(positions[l,n]);
+                    pieces.Add(pawnSpawned);
+                }
+                if (n == 7) {
+                    // Fill Rooks
+                    if (l == 0 || l == 7) {
+                        GameObject rookSpawned = Instantiate(blackRookPrefab, positions[l,n].transform.position, blackRookPrefab.transform.rotation);
+                        rookSpawned.GetComponent<Piece>().AssignPosition(positions[l,n]);
+                        pieces.Add(rookSpawned);
+                    }
+                    // Fill Knights
+                    if (l == 1 || l == 6) {
+                        GameObject knightSpawned = Instantiate(blackKnightPrefab, positions[l,n].transform.position, blackKnightPrefab.transform.rotation);
+                        knightSpawned.GetComponent<Piece>().AssignPosition(positions[l,n]);
+                        pieces.Add(knightSpawned);
+                    }
+                    // Fill Bishops
+                    if (l == 2 || l == 5) {
+                        GameObject bishopSpawned = Instantiate(blackBishopPrefab, positions[l,n].transform.position, blackBishopPrefab.transform.rotation);
+                        bishopSpawned.GetComponent<Piece>().AssignPosition(positions[l,n]);
+                        pieces.Add(bishopSpawned);
+                    }
+                    // Fill Queen
+                    if (l == 3) {
+                        GameObject queenSpawned = Instantiate(blackQueenPrefab, positions[l,n].transform.position, blackQueenPrefab.transform.rotation);
+                        queenSpawned.GetComponent<Piece>().AssignPosition(positions[l,n]);
+                        pieces.Add(queenSpawned);
+                    }
+                    // Fill King
+                    if (l == 4) {
+                        GameObject kingSpawned = Instantiate(blackKingPrefab, positions[l,n].transform.position, blackKingPrefab.transform.rotation);
+                        kingSpawned.GetComponent<Piece>().AssignPosition(positions[l,n]);
+                        pieces.Add(kingSpawned);
+                    }
+                }
+                #endregion
             }
-            if (pos.GetComponent<Position>().GetNumber() == 8) {
-                // Fill Rooks
-                if (pos.GetComponent<Position>().GetLetter() == 'A' || pos.GetComponent<Position>().GetLetter() == 'H') {
-                    GameObject rookSpawned = Instantiate(blackRookPrefab, pos.transform.position, blackRookPrefab.transform.rotation);
-                    rookSpawned.GetComponent<Piece>().AssignPosition(pos);
-                    pieces.Add(rookSpawned);
-                }
-                // Fill Knights
-                if (pos.GetComponent<Position>().GetLetter() == 'B' || pos.GetComponent<Position>().GetLetter() == 'G') {
-                    GameObject knightSpawned = Instantiate(blackKnightPrefab, pos.transform.position, blackKnightPrefab.transform.rotation);
-                    knightSpawned.GetComponent<Piece>().AssignPosition(pos);
-                    pieces.Add(knightSpawned);
-                }
-                // Fill Bishops
-                if (pos.GetComponent<Position>().GetLetter() == 'C' || pos.GetComponent<Position>().GetLetter() == 'F') {
-                    GameObject bishopSpawned = Instantiate(blackBishopPrefab, pos.transform.position, blackBishopPrefab.transform.rotation);
-                    bishopSpawned.GetComponent<Piece>().AssignPosition(pos);
-                    pieces.Add(bishopSpawned);
-                }
-                // Fill Queen
-                if (pos.GetComponent<Position>().GetLetter() == 'D') {
-                    GameObject queenSpawned = Instantiate(blackQueenPrefab, pos.transform.position, blackQueenPrefab.transform.rotation);
-                    queenSpawned.GetComponent<Piece>().AssignPosition(pos);
-                    pieces.Add(queenSpawned);
-                }
-                // Fill King
-                if (pos.GetComponent<Position>().GetLetter() == 'E') {
-                    GameObject kingSpawned = Instantiate(blackKingPrefab, pos.transform.position, blackKingPrefab.transform.rotation);
-                    kingSpawned.GetComponent<Piece>().AssignPosition(pos);
-                    pieces.Add(kingSpawned);
-                }
-            }
-            #endregion
         }
     }
 
@@ -163,15 +168,55 @@ public class ChessBoard : MonoBehaviour {
         this.pieceSelected = piece;
         this.pieceSelected.GetComponent<Piece>().SetSelectionTo(true);
         SelectPosition(this.pieceSelected.GetComponent<Piece>().GetCurrentPosition());                  // Selects the position where the piece is placed at
+        possibleMovesOfSelectedPiece = ShowPossibleMovesOfPiece(piece);                                 // Shows the possible moves
     }
 
     public void UnselectPiece() {
         if(this.pieceSelected != null) this.pieceSelected.GetComponent<Piece>().SetSelectionTo(false);
         this.pieceSelected = null;
         UnselectPosition();                                                                             // Unselects the position where the piece is placed at
+        HidePossibleMovesOfSelectedPiece();
+    }
+
+    private List<GameObject> ShowPossibleMovesOfPiece(GameObject piece) {
+        List<GameObject> possibleMoves = new List<GameObject>();
+        possibleMoves = piece.GetComponent<Piece>().GetPossibleMoves();
+        
+        foreach (GameObject pos in possibleMoves) {
+            if(pos.GetComponent<Position>().GetPiece() == null) {
+                pos.GetComponent<Position>().SetPossibleMoveTo(true);
+            }
+            else {
+                pos.GetComponent<Position>().SetPossibleAttackMoveTo(true);
+            }
+        }
+        return possibleMoves;
+    }
+
+    private void HidePossibleMovesOfSelectedPiece() {
+        foreach (GameObject pos in possibleMovesOfSelectedPiece) {
+            if(pos.GetComponent<Position>().GetPiece() == null) {
+                pos.GetComponent<Position>().SetPossibleMoveTo(false);
+            }
+            else {
+                pos.GetComponent<Position>().SetPossibleAttackMoveTo(false);
+            }
+        }
+    }
+
+    public List<GameObject> GetPossibleMovesOfSelectedPiece() {
+        return this.possibleMovesOfSelectedPiece;
     }
 
     public GameObject GetPieceSelected() {
         return this.pieceSelected;
+    }
+
+    public GameObject[,] GetPositions() {
+        return this.positions;
+    }
+
+    public GameObject GetPositionAt(int l, int n) {
+        return this.positions[l,n];
     }
 }
