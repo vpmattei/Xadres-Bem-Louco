@@ -8,7 +8,7 @@ public class Rook : Piece {
         this.gameObject.name = "Rook(" + letter + ", " + (number+1) + ")";
     }
 
-    public override List<GameObject> GetPossibleMoves() {
+    public override void SetPossibleMoves() {
         List<GameObject> possibleMoves = new List<GameObject>();
 
         // Left
@@ -23,6 +23,6 @@ public class Rook : Piece {
         // Down
         possibleMoves.AddRange(GetPossibleMovesAtDirection(0, -1));
         
-        return possibleMoves;
+        this.possibleMovePositions = possibleMoves;
     }
 }

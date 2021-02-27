@@ -46,8 +46,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSelected: 0
-  isPossibleMove: 0
-  isPossibleAttackMove: 0
+  possibleMove: 0
+  possibleAttackMove: 0
+  possibleRoqueMove: 0
   piece: {fileID: 0}
 --- !u!65 &5329129527002949781
 BoxCollider:

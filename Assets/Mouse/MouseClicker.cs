@@ -19,7 +19,7 @@ public class MouseClicker : MonoBehaviour
     }
 
     void Update() {
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButtonDown(0) && gameCoordinator.GetComponent<GameCoordinator>().GetCurrentGameState().ToString() != "CheckMate") {
             //Debug.Log("Pressed left click, casting ray.");
             CastRay();
         }
@@ -39,20 +39,23 @@ public class MouseClicker : MonoBehaviour
             currentTurn = gameCoordinator.GetComponent<GameCoordinator>().GetCurrentTurn().ToString();  // Get the current turn
             currentGamePhase = gameCoordinator.GetComponent<GameCoordinator>().GetCurrentGamePhase().ToString();
 
-            #region Chose Piece Phase
             if(currentGamePhase == GameCoordinator.GamePhase.ChosePiece.ToString()) {
-                SelectPieceFromObjectClicked(objectClicked);
-
-                if(objectClicked.CompareTag(currentTurn)) {  // Is the object clicked friendly? Then go to the next game phase
+            #region Chose Piece Phase
+                // If the object clicked is friendly
+                    // -> Select the piece
+                    // -> Go to the next game phase
+                if(objectClicked.CompareTag(currentTurn)) {
+                    SelectPieceFromObjectClicked(objectClicked);
                     gameCoordinator.GetComponent<GameCoordinator>().NextGamePhase();
                 }
-            }
             #endregion
+            }
 
-            #region Chose Move Phase
             if(currentGamePhase == GameCoordinator.GamePhase.ChoseMove.ToString()) {
+            #region Chose Move Phase
                 // Get the possible moves of the current selected piece
                 List<GameObject> possibleMoves = chessBoard.GetComponent<ChessBoard>().GetPossibleMovesOfSelectedPiece();
+                List<GameObject> possibleRoqueMoves = chessBoard.GetComponent<ChessBoard>().GetPossibleRoqueMovesOfSelectedPiece();
 
                 // If we click on a position then we check if :
                     // Is it a possible move ?
@@ -64,10 +67,24 @@ public class MouseClicker : MonoBehaviour
                     GameObject positionClicked = objectClicked;
                     GameObject pieceAtPosition = positionClicked.GetComponent<Position>().GetPiece();
 
-                    // We check if the position clicked is on the list of possible moves
-                    if (possibleMoves.Contains(positionClicked)) {
-                        // Is it empty or has an enemy piece? Then just move to the position and/or kill the enemy
-                        if(pieceAtPosition == null || !pieceAtPosition.CompareTag(currentTurn)) {
+                    // We check first if it is a ROQUE MOVE
+                    if (possibleRoqueMoves.Contains(positionClicked)) {
+                        pieceSelected.GetComponent<King>().MakeRoqueMoveAt(positionClicked);
+                        gameCoordinator.GetComponent<GameCoordinator>().NextGamePhase();
+                        pieceSelected = null;
+                    }
+                    // If it is not a ROQUE MOVE then we check if the position clicked is on the list of possible moves
+                    else if (possibleMoves.Contains(positionClicked)) {
+                        // Is it empty ? Then just move to the position
+                        if(pieceAtPosition == null) {
+                            pieceSelected.GetComponent<Piece>().MoveToPostion(positionClicked);
+
+                            gameCoordinator.GetComponent<GameCoordinator>().NextGamePhase();
+                            pieceSelected = null;
+                        }
+                        // Does it have an enemy piece ? Then move to the position and kill the enemy
+                        else if (pieceAtPosition != null && !pieceAtPosition.CompareTag(currentTurn)) {
+                            pieceAtPosition.GetComponent<Piece>().Die();
                             pieceSelected.GetComponent<Piece>().MoveToPostion(positionClicked);
 
                             gameCoordinator.GetComponent<GameCoordinator>().NextGamePhase();
@@ -88,6 +105,7 @@ public class MouseClicker : MonoBehaviour
 
                     // We check if the enemy clicked's position is on the list of possible moves
                     if (possibleMoves.Contains(positionOfPiece)) {
+                        pieceClicked.GetComponent<Piece>().Die();
                         pieceSelected.GetComponent<Piece>().MoveToPostion(positionOfPiece);
 
                         gameCoordinator.GetComponent<GameCoordinator>().NextGamePhase();
@@ -99,8 +117,12 @@ public class MouseClicker : MonoBehaviour
                     SelectPieceFromObjectClicked(objectClicked);
                 }
 
-            }
+                // If we have done our action then we go to the next game phase(switch turn)
+                if (gameCoordinator.GetComponent<GameCoordinator>().GetCurrentGamePhase().ToString() == "MakeAction") {
+                    gameCoordinator.GetComponent<GameCoordinator>().NextGamePhase();
+                }
             #endregion
+            }
         }
         else {  // If we click on a empty space (not the board)
             // Unselects every selection

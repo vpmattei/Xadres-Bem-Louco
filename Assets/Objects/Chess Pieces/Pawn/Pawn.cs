@@ -8,7 +8,7 @@ public class Pawn : Piece {
         this.gameObject.name = "Pawn(" + letter + ", " + (number+1) + ")";
     }
 
-    public override List<GameObject> GetPossibleMoves() {
+    public override void SetPossibleMoves() {
         int l = this.letterIndex;
         int n = this.number;
         int movesForward = 2;
@@ -35,6 +35,7 @@ public class Pawn : Piece {
             if (IsEnemyAt(l + 1, n + 1)) possibleMoves.Add(chessBoard.GetComponent<ChessBoard>().GetPositionAt(l + 1, n + 1));
             if (IsEnemyAt(l - 1, n + 1)) possibleMoves.Add(chessBoard.GetComponent<ChessBoard>().GetPositionAt(l - 1, n + 1));
         }
-        return possibleMoves;
+
+        this.possibleMovePositions = possibleMoves;
     }
 }

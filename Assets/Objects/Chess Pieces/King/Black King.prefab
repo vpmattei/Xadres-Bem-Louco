@@ -48,9 +48,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameCoordinator: {fileID: 0}
+  chessBoard: {fileID: 0}
   isSelected: 0
   possibleMovePositions: []
   currentPosition: {fileID: 0}
+  possibleRoqueMoves: []
 --- !u!212 &6496987559048411968
 SpriteRenderer:
   m_ObjectHideFlags: 0

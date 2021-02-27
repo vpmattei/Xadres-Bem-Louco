@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameCoordinator: {fileID: 0}
+  chessBoard: {fileID: 0}
   isSelected: 0
   possibleMovePositions: []
   currentPosition: {fileID: 0}

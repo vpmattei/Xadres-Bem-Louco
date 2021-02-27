@@ -9,18 +9,14 @@ using System;
 public class GamePhaseUI : MonoBehaviour
 {
 
-    private TextMeshProUGUI gamePhaseText;
+    [SerializeField] private TextMeshProUGUI gamePhaseText;
+    [SerializeField] private TextMeshProUGUI gameStateText;
 
     [SerializeField] private GameObject gameCoordinator;   
-    // Start is called before the first frame update
-    void Start()
-    {
-        gamePhaseText = GetComponent<TextMeshProUGUI>();
-    }
-
-    // Update is called once per frame
+    
     void Update()
     {
-        gamePhaseText.SetText(gameCoordinator.GetComponent<GameCoordinator>().GetCurrentGamePhase().ToString());
+        gamePhaseText?.SetText(gameCoordinator.GetComponent<GameCoordinator>().GetCurrentGamePhase().ToString());
+        gameStateText?.SetText(gameCoordinator.GetComponent<GameCoordinator>().GetCurrentGameState().ToString());
     }
 }

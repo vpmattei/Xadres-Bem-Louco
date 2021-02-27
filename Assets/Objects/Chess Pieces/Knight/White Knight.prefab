@@ -52,7 +52,6 @@ MonoBehaviour:
   chessBoard: {fileID: 0}
   isSelected: 0
   possibleMovePositions: []
-  possibleAttackPositions: []
   currentPosition: {fileID: 0}
 --- !u!212 &3869304373175214306
 SpriteRenderer:

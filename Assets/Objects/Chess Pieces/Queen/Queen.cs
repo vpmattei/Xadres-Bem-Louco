@@ -7,7 +7,7 @@ public class Queen : Piece {
         this.gameObject.name = "Queen(" + letter + ", " + (number+1) + ")";
     }
 
-    public override List<GameObject> GetPossibleMoves() {
+    public override void SetPossibleMoves() {
         List<GameObject> possibleMoves = new List<GameObject>();
 
         // Down-Left
@@ -34,6 +34,6 @@ public class Queen : Piece {
         // Down
         possibleMoves.AddRange(GetPossibleMovesAtDirection(0, -1));
         
-        return possibleMoves;
+        this.possibleMovePositions = possibleMoves;
     }
 }

@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Knight : Piece {
     public override void SetName(string letter, int number) {
-        this.gameObject.name = "Knight(" + letter + ", " + number + ")";
+        this.gameObject.name = "Knight(" + letter + ", " + (number+1) + ")";
     }
 
-    public override List<GameObject> GetPossibleMoves() {
+    public override void SetPossibleMoves() {
         int l = this.letterIndex;
         int n = this.number;
 
@@ -53,6 +53,7 @@ public class Knight : Piece {
         if (CanMoveAt(l - 2, n - 1) || IsEnemyAt(l - 2, n - 1)) {
             possibleMoves.Add(chessBoard.GetComponent<ChessBoard>().GetPositionAt(l - 2, n - 1));
         }
-        return possibleMoves;
+
+        this.possibleMovePositions = possibleMoves;
     }
 }

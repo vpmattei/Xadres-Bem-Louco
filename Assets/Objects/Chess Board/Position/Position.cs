@@ -8,8 +8,9 @@ public class Position : MonoBehaviour {
     private int letterIndex;
     private int number;
     [SerializeField] private bool isSelected;
-    [SerializeField] private bool isPossibleMove;
-    [SerializeField] private bool isPossibleAttackMove;
+    [SerializeField] private bool possibleMove;
+    [SerializeField] private bool possibleAttackMove;
+    [SerializeField] private bool possibleRoqueMove;
     [SerializeField] private GameObject piece = null;
 
     public void SetPositions(char letter, int letterIndex, int number) {
@@ -38,33 +39,58 @@ public class Position : MonoBehaviour {
     }
 
     public void SetSelectionTo(bool isSelected) {
-        this.isPossibleMove = false;
-        this.isPossibleAttackMove = false;
+        this.possibleMove = false;
+        this.possibleAttackMove = false;
+        this.possibleRoqueMove = false;
 
         this.isSelected = isSelected;
         if (isSelected) this.gameObject.GetComponent<SpriteRenderer>().color =  Color.green;
         this.gameObject.GetComponent<SpriteRenderer>().enabled = isSelected;
     }
-    public void SetPossibleMoveTo(bool isPossibleMove) {
+    public void SetPossibleMoveTo(bool possibleMove) {
         this.isSelected = false;
-        this.isPossibleAttackMove = false;
+        this.possibleAttackMove = false;
+        this.possibleRoqueMove = false;
 
-        this.isPossibleMove = isPossibleMove;
-        if (isPossibleMove) this.gameObject.GetComponent<SpriteRenderer>().color =  Color.yellow;
-        this.gameObject.GetComponent<SpriteRenderer>().enabled = isPossibleMove;
+        this.possibleMove = possibleMove;
+        if (possibleMove) this.gameObject.GetComponent<SpriteRenderer>().color =  Color.yellow;
+        this.gameObject.GetComponent<SpriteRenderer>().enabled = possibleMove;
     }
 
-    public void SetPossibleAttackMoveTo(bool isPossibleAttackMove) {
+    public void SetPossibleAttackMoveTo(bool possibleAttackMove) {
         this.isSelected = false;
-        this.isPossibleMove = false;
+        this.possibleMove = false;
+        this.possibleRoqueMove = false;
 
-        this.isPossibleAttackMove = isPossibleAttackMove;
-        if (isPossibleAttackMove) this.gameObject.GetComponent<SpriteRenderer>().color =  Color.red;
-        this.gameObject.GetComponent<SpriteRenderer>().enabled = isPossibleAttackMove;
+        this.possibleAttackMove = possibleAttackMove;
+        if (possibleAttackMove) this.gameObject.GetComponent<SpriteRenderer>().color =  Color.red;
+        this.gameObject.GetComponent<SpriteRenderer>().enabled = possibleAttackMove;
     }
 
-    public char GetLetter() {
-        return this.letter;
+    public void SetPossibleRockMoveTo(bool possibleRoqueMove) {
+        this.isSelected = false;
+        this.possibleMove = false;
+        this.possibleAttackMove = false;
+
+        this.possibleRoqueMove = possibleRoqueMove;
+        if (possibleRoqueMove) this.gameObject.GetComponent<SpriteRenderer>().color =  new Color(0.617f, 0.567f, 1, 1);    // Purple-ish
+        this.gameObject.GetComponent<SpriteRenderer>().enabled = possibleRoqueMove;
+    }
+
+    public bool IsMovePossible() {
+        return this.possibleMove;
+    }
+
+    public bool IsAttackMovePossible() {
+        return this.possibleAttackMove;
+    }
+
+    public bool IsRoqueMovePossible() {
+        return this.possibleRoqueMove;
+    }
+
+    public int GetLetterIndex() {
+        return this.letterIndex;
     }
 
     public int GetNumber() {
